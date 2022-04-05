@@ -1,0 +1,8 @@
+      <Image
+        style={{ width: 300, height: 400, alignSelf: "center" }}
+        source={{ uri: "https://data.internom.mn/media/images" + book.photo }}
+      />
+      <Text style={{ fontSize: 18, fontWeight: "bold", padding: 10 }}>
+        {id}
+      </Text>
+      <Text>{book.content}</Text>
