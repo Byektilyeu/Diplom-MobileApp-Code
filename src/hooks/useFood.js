@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import UserContext from "../contexts/UserContext";
+import { restApiUrl } from "../../Constants";
 
 export default (foodId) => {
   const [food, setFood] = useState(null);
@@ -11,9 +12,7 @@ export default (foodId) => {
 
   const loadFood = async () => {
     try {
-      const result = await axios.get(
-        `http://10.0.0.103:8000/api/v1/foods/${foodId}`
-      );
+      const result = await axios.get(`${restApiUrl}/api/v1/foods/${foodId}`);
       setFood(result.data.data);
       setError(null);
     } catch (err) {
@@ -22,7 +21,7 @@ export default (foodId) => {
   };
 
   const deleteFood = (foodId) => {
-    return axios.delete(`http://10.0.0.103:8000/api/v1/foods/${foodId}`, {
+    return axios.delete(`${restApiUrl}/api/v1/foods/${foodId}`, {
       headers: { Authorization: "Bearer " + state.token },
     });
   };

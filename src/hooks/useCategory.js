@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { restApiUrl } from "../../Constants";
 
 export default () => {
   const [categories, setCategories] = useState([]);
@@ -13,7 +14,7 @@ export default () => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get("http://10.0.0.103:8000/api/v1/categories")
+      .get(`${restApiUrl}/api/v1/categories`)
       .then((result) => {
         console.log("catergoriiig amjillttai huleej avlaa ");
         setCategories(result.data.data);

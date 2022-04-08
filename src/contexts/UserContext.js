@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import { restApiUrl } from "../../Constants";
 
 const UserContext = React.createContext();
 
@@ -14,7 +15,7 @@ export const UserStore = (props) => {
 
   const logout = async () => {
     await AsyncStorage.removeItem("user");
-    await axios.get(`http://10.0.0.103:8000/api/v1/users/logout`);
+    await axios.get(`${restApiUrl}/api/v1/users/logout`);
     setIsLoggedIn(false);
     setToken(null);
     setEmail(null);
@@ -24,7 +25,7 @@ export const UserStore = (props) => {
 
   const login = (email, password) => {
     axios
-      .post(`http://10.0.0.103:8000/api/v1/users/login`, {
+      .post(`${restApiUrl}/api/v1/users/login`, {
         email: email,
         password: password,
       })
@@ -44,7 +45,7 @@ export const UserStore = (props) => {
 
   const signUp = (name, email, password) => {
     axios
-      .post(`http://10.0.0.103:8000/api/v1/users/register`, {
+      .post(`${restApiUrl}/api/v1/users/register`, {
         name: name,
         email: email,
         password: password,

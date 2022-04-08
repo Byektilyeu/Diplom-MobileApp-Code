@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { restApiUrl } from "../../Constants";
 
 export default (categoryId, searchServerValue, refreshCategory, setRefresh) => {
   const [foods, setFoods] = useState([]);
@@ -11,7 +12,7 @@ export default (categoryId, searchServerValue, refreshCategory, setRefresh) => {
   };
 
   useEffect(() => {
-    let limit = 3;
+    let limit = 30;
     let search = "";
 
     if (searchServerValue) {
@@ -23,10 +24,10 @@ export default (categoryId, searchServerValue, refreshCategory, setRefresh) => {
 
     axios
       .get(
-        `http://10.0.0.103:8000/api/v1/categories/${categoryId}/foods?limit=${limit}${search}`
+        `${restApiUrl}/api/v1/categories/${categoryId}/foods?limit=${limit}${search}`
       )
       .then((result) => {
-        console.log("nomnuudiig amjillttai huleej avlaa ");
+        console.log("hoolnuudiig amjillttai huleej avlaa ");
         setFoods(result.data.data);
         setErrorMessage(null);
         setLoading(false);

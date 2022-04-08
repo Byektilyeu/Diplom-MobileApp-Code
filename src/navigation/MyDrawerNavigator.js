@@ -10,6 +10,8 @@ import DrawerContent from "../components/DrawerContent.js";
 const Drawer = createDrawerNavigator();
 
 import UserContext from "../contexts/UserContext.js";
+import FoodAdd from "../screens/FoodAdd.js";
+import SettingsScreen from "../screens/SettingsScreen.js";
 
 export default () => {
   const state = useContext(UserContext);
@@ -32,11 +34,10 @@ export default () => {
       {state.isLoggedIn ? (
         <>
           {state.userRole === "admin" && (
-            <Drawer.Screen
-              name="Шинэ хоол нэмэх"
-              component={MyStackNavigator}
-            />
+            <Drawer.Screen name="Шинэ хоол нэмэх" component={FoodAdd} />
           )}
+
+          {/* <Drawer.Screen name="Тохиргоо" component={SettingsScreen} /> */}
           <Drawer.Screen
             name="Гарах"
             component={Text}

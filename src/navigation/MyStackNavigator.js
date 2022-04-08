@@ -1,8 +1,8 @@
 import React from "react";
-
 import HomeScreen from "../screens/HomeScreen.js";
 import FoodDetailScreen from "../screens/FoodDetailScreen.js";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { mainColor } from "../../Constants.js";
 
 const Stack = createNativeStackNavigator();
 
@@ -20,7 +20,7 @@ export default () => (
       component={HomeScreen}
       options={({ navigation }) => ({
         title: "Хоолны жор",
-        headerStyle: { backgroundColor: "#5186F3" },
+        headerStyle: { backgroundColor: mainColor },
         headerTintColor: "white",
         headerTitleStyle: { fontSize: 22 },
       })}
@@ -34,7 +34,7 @@ export default () => (
         headerBackTitleVisible: true,
         headerBackTitle: "Буцах",
         headerTruncatedBackTitle: "",
-        headerStyle: { backgroundColor: "#5186F3" },
+        headerStyle: { backgroundColor: mainColor },
         headerTintColor: "white",
         headerTitleStyle: { fontSize: 22 },
       }}

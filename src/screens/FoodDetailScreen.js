@@ -12,10 +12,11 @@ import React, { useLayoutEffect, useContext } from "react";
 import useFood from "../hooks/useFood";
 import { Feather } from "@expo/vector-icons";
 import UserContext from "../contexts/UserContext";
+import { restApiUrl } from "../../Constants";
 
 const FoodDetailScreen = (props) => {
-  // booksJs dotor baigaa book nii data ni params gedegeer propsoor ni orj irj bna
-  // console.log("<--------------->", props.route.params.book);
+  // foodsJs dotor baigaa food nii data ni params gedegeer propsoor ni orj irj bna
+  // console.log("<--------------->", props.route.params.food);
 
   const id = props.route.params.food;
   // console.log(id);
@@ -28,7 +29,7 @@ const FoodDetailScreen = (props) => {
   // console.log(height);
 
   const deleteOneFood = () => {
-    Alert.alert("Анхаар", "Та энэ хоолыг устгахад итгэлтэй байна уу", [
+    Alert.alert("Анхаар", "Та энэ номыг устгахад итгэлтэй байна уу", [
       { text: "Татгалзах", onPress: () => {} },
       {
         text: "Устгах",
@@ -76,10 +77,18 @@ const FoodDetailScreen = (props) => {
 
   return (
     <ScrollView style={{ padding: 20 }} showsVerticalScrollIndicator={false}>
-      <Image
-        style={{ width: 300, height: 400, alignSelf: "center" }}
-        source={{ uri: "https://data.internom.mn/media/images" + food.photo }}
-      />
+      {food.photo.startsWith("/") ? (
+        <Image
+          style={{ width: 300, height: 400, alignSelf: "center" }}
+          source={{ uri: "https://data.internom.mn/media/images" + food.photo }}
+        />
+      ) : (
+        <Image
+          style={{ width: 300, height: 400, alignSelf: "center" }}
+          source={{ uri: restApiUrl + "/upload/" + food.photo }}
+        />
+      )}
+
       <Text style={{ fontSize: 18, fontWeight: "bold", padding: 10 }}>
         {food.name}
       </Text>
@@ -95,7 +104,7 @@ const FoodDetailScreen = (props) => {
 
       {state.userRole === "admin" && (
         <View style={{ marginBottom: 100 }}>
-          <Button onPress={deleteOneFood} title="Энэ хоолыг устгах" />
+          <Button onPress={deleteOneFood} title="Энэ номыг устгах" />
         </View>
       )}
     </ScrollView>
