@@ -3,6 +3,8 @@ import HomeScreen from "../screens/HomeScreen.js";
 import FoodDetailScreen from "../screens/FoodDetailScreen.js";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { mainColor } from "../../Constants.js";
+import UserCartScreen from "../screens/UserCartScreen.js";
+import GetUserFoodsScreen from "../screens/GetUserFoodsScreen.js";
 
 const Stack = createNativeStackNavigator();
 
@@ -21,7 +23,7 @@ export default () => (
       options={({ navigation }) => ({
         title: "Хоолны жор",
         headerStyle: { backgroundColor: mainColor },
-        headerTintColor: "white",
+        headerTintColor: "#33324D",
         headerTitleStyle: { fontSize: 22 },
       })}
     />
@@ -35,9 +37,12 @@ export default () => (
         headerBackTitle: "Буцах",
         headerTruncatedBackTitle: "",
         headerStyle: { backgroundColor: mainColor },
-        headerTintColor: "white",
+        headerTintColor: "#33324D",
         headerTitleStyle: { fontSize: 22 },
       }}
     />
+
+    <Stack.Screen name="Cart" component={UserCartScreen} />
+    <Stack.Screen name="UserFoods" component={GetUserFoodsScreen} />
   </Stack.Navigator>
 );

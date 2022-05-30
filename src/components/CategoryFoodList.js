@@ -25,10 +25,35 @@ const CategoryFoodList = ({
     setRefresh
   );
 
-  console.log("---------->");
-  const filteredFoods = foods.filter((el) =>
-    el.name.toLowerCase().includes(searchLocalValue.toLowerCase())
+  // console.log("---------->", foods);
+  const filteredFoods = foods.filter(
+    (el) =>
+      el.name.toLowerCase().includes(searchLocalValue.toLowerCase()) ||
+      el.content.toLowerCase().includes(searchLocalValue.toLowerCase()) ||
+      el.author.toLowerCase().includes(searchLocalValue.toLowerCase()) ||
+      el.ingredients.toLowerCase().includes(searchLocalValue.toLowerCase())
+    // el.ingredients.filter((e) =>
+    //   e.name.toLowerCase().includes(searchLocalValue.toLowerCase())
+    // )
+    // (el !== null &&
+    //   el.map((e) => {
+    // el.ingredients.filter((e) =>
+    //   e.name.toLowerCase().includes(searchLocalValue.toLowerCase())
+    // )
+    // }))
   );
+
+  // const filteredFoods = foods.map((el) => {
+  //   el.ingredients !== null &&
+  //     el.ingredients.filter((e) =>
+  //       e.name.toLowerCase().includes(searchLocalValue.toLowerCase())
+  //     );
+  // });
+  // const filteredFoods = foods.ingredients.filter(
+  //   (el) =>
+  //     el.name !== null &&
+  //     el.name.toLowerCase().includes(searchLocalValue.toLowerCase())
+  // );
 
   //   console.log(data);
   return (

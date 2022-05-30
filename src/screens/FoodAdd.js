@@ -7,11 +7,11 @@ import {
   ScrollView,
   Alert,
   Image,
-  Button,
+  // Button,
 } from "react-native";
 import React, { useState } from "react";
 import * as Animatable from "react-native-animatable";
-
+import { Button } from "react-native-paper";
 import { lightColor, mainColor, restApiUrl } from "../../Constants";
 import FormText from "../components/FormText";
 import FormSwitch from "../components/FormSwitch";
@@ -27,16 +27,21 @@ import * as ImagePicker from "expo-image-picker";
 const FoodAdd = (props) => {
   const [categories, errorMessage, loading] = useCategory();
   const [food, setFood] = useState({
-    name: "Nomiin ner",
-    photo: "photo.jpg",
-    rating: 4.0,
-    balace: 6,
-    author: "author",
-    price: "20000",
-    content: "nomiiin tailbar hhha",
-    bestseller: true,
+    name: "Burger",
+    photo: "nophoto.jpg",
+    author: "Beka",
+    rating: 6,
+    content: "Бургерийг үхрийн махар хийвэл илүү амттай болдог.",
+    ingredients:
+      "1кг үхрийн мах, бургерийн булочка 4ш, бяслаг, улаан лооль, хүрэн сонгино, майонез, кетчуп",
+    steps:
+      "Махыг татна. Котлет шиг бөөрөнхийлнө. Хэт чанга базаж болохгүй. Давс цацна. Амтлахгүй. Котлетийг 8-10 минут шарна. Нэг удаа эргүүлнэ. Бургерийг бэлдэнэ: талхан дээр кетчуп түрхээд бусад орцоо тавина. ",
+    calorie: 123,
+    bestseller: false,
+    balance: null,
+    time: 30,
     category: null,
-    available: ["old"],
+    video: "novideo",
   });
 
   const [serverError, setServerError] = useState(null);
@@ -52,7 +57,7 @@ const FoodAdd = (props) => {
   };
 
   const handleUploadProgress = (event) => {
-    if (total === 0) setUploadTotal(event.total);
+    if (event.total === 0) setUploadTotal(event.total);
 
     setUploadProgress((uploadProgress) => {
       console.log("Upload total", uploadTotal);
@@ -106,11 +111,13 @@ const FoodAdd = (props) => {
           xhr.open("PUT", `${restApiUrl}/api/v1/foods/${newFood._id}/photo`);
           xhr.send(data);
 
-          props.navigation.navigate("Detail", { food: newFood._id });
+          // props.navigation.navigate("Detail", { food: newFood._id });
+          props.navigation.navigate("Home", { food: newFood._id }) &&
+            props.navigation.navigate("UserFoods", { userFoods: newFood._id });
         })
         .catch((err) => {
           if (err.response) {
-            setServerError(err.response.data.error.message);
+            setServerError(err.response.data.error);
           } else {
             setServerError(err.message);
           }
@@ -119,24 +126,38 @@ const FoodAdd = (props) => {
           setSaving(false);
         });
     } else {
-      Alert.alert("Та хоолын категорыг сонгоно уу");
+      Alert.alert("Та хоолны категорийг сонгоно уу");
     }
   };
 
   const [error, setError] = useState({
     name: false,
+    video: false,
     author: false,
-    price: false,
+    rating: false,
     content: false,
+    ingredients: false,
+    steps: false,
+    calorie: false,
     bestseller: true,
+    time: false,
+    balance: false,
   });
 
   const checkName = (text) => {
     setError({
       ...error,
-      name: text.length < 5 || text.length > 20,
+      name: text.length < 5 || text.length > 50,
     });
     setFood({ ...food, name: text });
+  };
+
+  const checkVideo = (text) => {
+    setError({
+      ...error,
+      video: text.length < 5,
+    });
+    setFood({ ...food, video: text });
   };
 
   const checkAuthor = (text) => {
@@ -147,12 +168,11 @@ const FoodAdd = (props) => {
     setFood({ ...food, author: text });
   };
 
-  const checkPrice = (text) => {
-    setError({
-      ...error,
-      price: text < 1000,
-    });
-    setFood({ ...food, price: text });
+  const checkRating = (text) => {
+    setFood({ ...food, rating: text });
+  };
+  const checkTime = (text) => {
+    setFood({ ...food, time: text });
   };
 
   const checkContent = (text) => {
@@ -163,11 +183,35 @@ const FoodAdd = (props) => {
     setFood({ ...food, content: text });
   };
 
+  const checkIngredients = (text) => {
+    setError({
+      ...error,
+      ingredients: text.length < 5 || text.length > 1000,
+    });
+    setFood({ ...food, ingredients: text });
+  };
+
+  const checkSteps = (text) => {
+    setError({
+      ...error,
+      steps: text.length < 5 || text.length > 1000,
+    });
+    setFood({ ...food, steps: text });
+  };
+
+  const checkCalorie = (text) => {
+    setFood({ ...food, calorie: text });
+  };
+
   const toggleBestseller = () => {
     setFood({
       ...food,
       bestseller: !food.bestseller,
     });
+  };
+
+  const checkBalance = (text) => {
+    setFood({ ...food, balance: text });
   };
 
   if (uploadTotal > 0) {
@@ -206,10 +250,10 @@ const FoodAdd = (props) => {
           backgroundColor: mainColor,
         }}
       >
-        <Text style={{ fontSize: 30, color: lightColor }}>
-          шинээр хоол нэмэх
+        <Text style={{ fontSize: 20, color: "#33324D" }}>
+          Шинээр хоол нэмэх
         </Text>
-        <Text style={{ fontSize: 16, color: lightColor, marginTop: 10 }}>
+        <Text style={{ fontSize: 16, color: "#33324D", marginTop: 5 }}>
           Та хоолын мэдээллээ оруулна уу
         </Text>
       </View>
@@ -218,7 +262,7 @@ const FoodAdd = (props) => {
         animation="fadeInUpBig"
         duration={800}
         style={{
-          flex: 5,
+          flex: 9,
           paddingHorizontal: 20,
           paddingVertical: 30,
           paddingVertical: 10,
@@ -247,7 +291,14 @@ const FoodAdd = (props) => {
                 justifyContent: "center",
               }}
             >
-              <Button title="Хоолын зургийг сонгоно уу" onPress={pickImage} />
+              <Button
+                mode="outlined"
+                color="#05375a"
+                style={{ height: 40 }}
+                onPress={pickImage}
+              >
+                Хоолны зургийг сонгоно уу
+              </Button>
               {food.photo && (
                 <Image
                   source={{ uri: food.photo }}
@@ -258,17 +309,17 @@ const FoodAdd = (props) => {
 
             <FormText
               label="Хоолын нэрийг оруулна уу"
-              placholder="Хоолын нэр"
-              icon="food-open"
+              placeholder="Хоолын нэр"
+              icon="edit"
               value={food.name}
               onChangeText={checkName}
-              errorText="Хоолын нэрийн урт дор хаяж 4-өөс 20 үсгээс тогтоно"
+              errorText="Хоолны нэрийн урт дор хаяж 4-өөс 20 үсгээс тогтоно"
               errorShow={error.name}
             />
 
             <FormText
-              label="Хоолын зохиогчийг оруулна уу"
-              placholder="Зохиогчийн нэр"
+              label="Хоолны зохиогчийг оруулна уу"
+              placeholder="Зохиогчийн нэр"
               icon="user"
               value={food.author}
               onChangeText={checkAuthor}
@@ -277,26 +328,71 @@ const FoodAdd = (props) => {
             />
 
             <FormText
-              label="Хоолын үнийг оруулна уу"
-              keyboardType="numeric"
-              placholder="Хоолын үнэ"
-              icon="dollar-sign"
-              value={food.price}
-              onChangeText={checkPrice}
-              errorText="Хоолын үнэ 1000 төгрөгөөс дээш байна"
-              errorShow={error.price}
+              label="Хоолны бичлэгийн линк-ийг оруулна уу"
+              placeholder="https://www.youtube.com/embed/ формат"
+              icon="play-circle"
+              value={food.video}
+              onChangeText={checkVideo}
+              errorText="Хоолны нэрийн урт дор хаяж 4-өөс 20 үсгээс тогтоно"
+              errorShow={error.video}
             />
 
             <FormText
-              label="Хоолын тайлбарыг оруулна уу"
-              placholder="Тайлбар 1000 үсгээс хэтрэхгүй"
+              label="Хоолны рэйтингийг оруулна уу"
+              keyboardType="numeric"
+              placeholder="Хоолны рэйтинг тоон утгатай"
+              icon="star"
+              value={food.rating}
+              onChangeText={checkRating}
+              errorText="Хоолны рэйтинг 0-10ийн хооронд байх ёстой "
+              errorShow={error.rating}
+            />
+
+            <FormText
+              label="Хоолны тайлбарыг оруулна уу"
+              placeholder="Тайлбар 1000 үсгээс хэтрэхгүй"
               icon="edit"
               multiline
               numberOfLines={10}
               value={food.content}
               onChangeText={checkContent}
-              errorText="Хоолын тайлбар 10 - 1000 тэмдэгтээс тогтоно"
+              errorText="Хоолны тайлбар 10 - 1000 тэмдэгтээс тогтоно"
               errorShow={error.content}
+            />
+
+            <FormText
+              label="Хоолны орцыг оруулна уу"
+              placeholder="Орц 1000 үсгээс хэтрэхгүй"
+              icon="edit"
+              multiline
+              numberOfLines={10}
+              value={food.ingredients}
+              onChangeText={checkIngredients}
+              errorText="Хоолны орц 10 - 1000 тэмдэгтээс тогтоно"
+              errorShow={error.ingredients}
+            />
+
+            <FormText
+              label="Хоол хийх дарааллыг оруулна уу"
+              placeholder="1000 үсгээс хэтрэхгүй"
+              icon="edit"
+              multiline
+              numberOfLines={10}
+              value={food.steps}
+              onChangeText={checkSteps}
+              errorText="Хоол хийх дарааллын тайлбар 10 - 1000 тэмдэгтээс тогтоно"
+              errorShow={error.steps}
+            />
+
+            <FormText
+              label="Хоолны калорийн хэмжээг оруулна уу"
+              keyboardType="numeric"
+              placeholder="Хоолны калори тоон утгатай"
+              icon="edit"
+              value={food.calorie}
+              onChangeText={checkCalorie}
+              errorText="Хоолны калори нь тоо байх ёстой "
+              errorShow={error.calorie}
             />
 
             <FormSwitch
@@ -305,6 +401,26 @@ const FoodAdd = (props) => {
               data={["Бестселлер мөн", "Бестселлер биш"]}
               value={food.bestseller}
               onValueChange={toggleBestseller}
+            />
+
+            <FormText
+              label="Хоолны балансын хэмжээг оруулна уу"
+              keyboardType="numeric"
+              placeholder="Хоолны баланс"
+              icon="edit"
+              value={food.balance}
+              onChangeText={checkBalance}
+              errorText="Хоолны баланс нь тоо байх ёстой "
+              errorShow={error.balance}
+            />
+            <FormText
+              label="Хоол хийхэд зарцуулагдах хугацааг оруулна уу"
+              keyboardType="numeric"
+              placeholder="Хоол хийх хугацаа (Минутаар)"
+              icon="clock"
+              value={food.time}
+              onChangeText={checkTime}
+              errorShow={error.time}
             />
 
             <FormRadioButtons
@@ -333,13 +449,28 @@ const FoodAdd = (props) => {
               */}
 
             <View
-              style={{ flexDirection: "row", justifyContent: "space-evenly" }}
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginVertical: 20,
+              }}
             >
-              <MyButton
-                title="Буцах"
+              <Button
                 onPress={() => props.navigation.goBack()}
-              />
-              <MyButton title="Бүртгэх" onPress={sendFoodToServer} />
+                mode="outlined"
+                color="#05375a"
+                style={{ height: 40 }}
+              >
+                Буцах
+              </Button>
+              <Button
+                onPress={sendFoodToServer}
+                mode="outlined"
+                color="#05375a"
+                style={{ height: 40 }}
+              >
+                Бүртгэх
+              </Button>
             </View>
           </ScrollView>
         )}

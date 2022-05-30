@@ -12,6 +12,12 @@ const Drawer = createDrawerNavigator();
 import UserContext from "../contexts/UserContext.js";
 import FoodAdd from "../screens/FoodAdd.js";
 import SettingsScreen from "../screens/SettingsScreen.js";
+import UserProfileScreen from "../screens/UserProfileScreen.js";
+import GetUserFoodsScreen from "../screens/GetUserFoodsScreen.js";
+import CategoryScreen from "../screens/CategoryScreen.js";
+import UserCartScreen from "../screens/UserCartScreen";
+import UserListScreen from "../screens/UserListScreen";
+import { mainColor } from "../../Constants.js";
 
 export default () => {
   const state = useContext(UserContext);
@@ -27,17 +33,37 @@ export default () => {
       initialRouteName="Home"
       screenOptions={{
         headerShown: false,
+        drawerStyle: {
+          backgroundColor: "#E6E6E9",
+          width: 240,
+        },
       }}
       // drawerContent={(props) => <DrawerContent {...props} />}
     >
       <Drawer.Screen name="Нүүр" component={MyStackNavigator} />
       {state.isLoggedIn ? (
         <>
-          {state.userRole === "admin" && (
+          {/* {state.userRole === "admin" && (
             <Drawer.Screen name="Шинэ хоол нэмэх" component={FoodAdd} />
+          )} */}
+          <Drawer.Screen name="Шинэ хоол нэмэх" component={FoodAdd} />
+          {/* <Drawer.Screen name="Тохиргоо" component={SettingsScreen} /> */}
+          <Drawer.Screen name="Хувийн мэдээлэл" component={UserProfileScreen} />
+          <Drawer.Screen
+            name="Таны оруулсан хоолнууд"
+            component={GetUserFoodsScreen}
+          />
+          <Drawer.Screen
+            name="Таны хадгалсан хоол"
+            component={UserCartScreen}
+          />
+          {state.userRole === "admin" && (
+            <Drawer.Screen name="Категори" component={CategoryScreen} />
+          )}
+          {state.userRole === "admin" && (
+            <Drawer.Screen name="Хэрэглэгчид" component={UserListScreen} />
           )}
 
-          {/* <Drawer.Screen name="Тохиргоо" component={SettingsScreen} /> */}
           <Drawer.Screen
             name="Гарах"
             component={Text}

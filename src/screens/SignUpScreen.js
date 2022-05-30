@@ -5,12 +5,13 @@ import MyButton from "../components/MyButton";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import UserContext from "../contexts/UserContext";
+import { Button } from "react-native-paper";
 
 const SignUpScreen = ({ route, navigation }) => {
-  const [name, setName] = useState("Bekaa");
-  const [email, setEmail] = useState("Bekaa@gmail.com");
-  const [password1, setPassword1] = useState("1234");
-  const [password2, setPassword2] = useState("1234");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password1, setPassword1] = useState("");
+  const [password2, setPassword2] = useState("");
   const [error, setError] = useState(null);
   const state = useContext(UserContext);
 
@@ -33,7 +34,7 @@ const SignUpScreen = ({ route, navigation }) => {
     <View>
       <Image
         style={{ width: "100%", height: "30%" }}
-        source={require("../../assets/Images/shop.jpg")}
+        source={require("../../assets/Images/signUp.jpg")}
       />
       <Text
         style={{
@@ -64,22 +65,45 @@ const SignUpScreen = ({ route, navigation }) => {
         placeholder="та имэйл хаягаа оруулна уу"
         onChangeText={setEmail}
       />
-      <MyInput
-        value={password2}
-        secureTextEntry={true}
-        placeholder="та нууц үгээ давтан оруулна уу"
-        onChangeText={setPassword2}
-      />
+
       <MyInput
         value={password1}
         secureTextEntry={true}
         placeholder="та нууц үгээ оруулна уу"
         onChangeText={setPassword1}
       />
+      <MyInput
+        value={password2}
+        secureTextEntry={true}
+        placeholder="та нууц үгээ давтан оруулна уу"
+        onChangeText={setPassword2}
+      />
 
-      <View style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
-        <MyButton title="Буцах" onPress={() => navigation.goBack()} />
-        <MyButton title="Бүртгүүлэх" onPress={signupHandler} />
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-evenly",
+          marginTop: 20,
+        }}
+      >
+        {/* <MyButton title="Буцах" onPress={() => navigation.goBack()} />
+        <MyButton title="Бүртгүүлэх" onPress={signupHandler} /> */}
+        <Button
+          onPress={() => navigation.goBack()}
+          mode="outlined"
+          color="#05375a"
+          style={{ height: 40 }}
+        >
+          Буцах
+        </Button>
+        <Button
+          onPress={signupHandler}
+          mode="outlined"
+          color="#05375a"
+          style={{ height: 40 }}
+        >
+          Бүртгүүлэх
+        </Button>
       </View>
     </View>
   );

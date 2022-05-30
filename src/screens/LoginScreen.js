@@ -1,12 +1,13 @@
 import { StyleSheet, Text, View, Image, Alert } from "react-native";
 import React, { useState, useContext } from "react";
 import MyInput from "../components/MyInput";
-import MyButton from "../components/MyButton";
+// import MyButton from "../components/MyButton";
 import UserContext from "../contexts/UserContext";
+import { Button } from "react-native-paper";
 
 const LoginScreen = ({ route, navigation }) => {
-  const [email, setEmail] = useState("admin@gmail.com");
-  const [password, setPassword] = useState("1234");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
   const state = useContext(UserContext);
@@ -33,7 +34,7 @@ const LoginScreen = ({ route, navigation }) => {
     <View>
       <Image
         style={{ width: "100%", height: "50%" }}
-        source={require("../../assets/Images/shop.jpg")}
+        source={require("../../assets/Images/login.jpg")}
       />
       <Text
         style={{
@@ -66,9 +67,31 @@ const LoginScreen = ({ route, navigation }) => {
         onChangeText={setPassword}
       />
 
-      <View style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
-        <MyButton title="Буцах" onPress={() => navigation.goBack()} />
-        <MyButton title="Нэвтрэх" onPress={loginHandler} />
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-evenly",
+          marginTop: 20,
+        }}
+      >
+        <Button
+          onPress={() => navigation.goBack()}
+          mode="outlined"
+          color="#05375a"
+          style={{ height: 40 }}
+        >
+          Буцах
+        </Button>
+        <Button
+          onPress={loginHandler}
+          mode="outlined"
+          color="#05375a"
+          style={{ height: 40 }}
+        >
+          Нэвтрэх
+        </Button>
+        {/* <MyButton title="Буцах" onPress={() => navigation.goBack()} />
+        <MyButton title="Нэвтрэх" onPress={loginHandler} /> */}
       </View>
     </View>
   );

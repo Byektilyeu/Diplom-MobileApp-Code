@@ -26,6 +26,52 @@ export default (foodId) => {
     });
   };
 
+  // const updateFood = (
+  //   name,
+  //   photo,
+  //   author,
+  //   rating,
+  //   content,
+  //   steps,
+  //   ingredients,
+  //   calorie,
+  //   video
+  // ) => {
+  //   axios
+  //     .put(
+  //       `${restApiUrl}/api/v1/foods/${foodId}`,
+  //       {
+  //         name: name,
+  //         photo: photo,
+  //         author: author,
+  //         rating: rating,
+  //         content: content,
+  //         steps: steps,
+  //         calorie: calorie,
+  //         ingredients: ingredients,
+  //         video: video,
+  //       },
+  //       {
+  //         headers: { Authorization: "Bearer " + state.token },
+  //       }
+  //     )
+  //     .then((result) => {
+  //       console.log(result);
+  //       this.setState({
+  //         ...result.data.data,
+  //         error: null,
+  //         loading: false,
+  //         success: "Амжилттай хадгалагдлаа",
+  //       });
+  //     })
+  //     .catch((err) => {
+  //       this.setState({
+  //         error: err.response.data.error.message,
+  //         loading: false,
+  //       });
+  //     });
+  // };
+
   useEffect(() => {
     loadFood();
   }, []);

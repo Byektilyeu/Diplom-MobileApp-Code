@@ -12,6 +12,7 @@ import useCategory from "../hooks/useCategory";
 import CategoryFoodList from "../components/CategoryFoodList";
 import Spinner from "../components/Spinner";
 import MyHeaderButton from "../components/MyHeaderButton";
+import { Feather } from "@expo/vector-icons";
 import {
   HeaderButtons,
   Item,
@@ -26,13 +27,50 @@ const HomeScreen = ({ navigation, route }) => {
   const [serverSearchText, setServerSearchText] = useState("");
   const [categories, errorMessage, loading] = useCategory();
   const [refresh, setRefresh] = useState(false);
+  // const [userName, setUserName] = useState("");
 
   const state = useContext(UserContext);
   console.log("++++++++++++++++++", route);
+  // setUserName(state.userName);
 
   if (route.params && route.params.deletedFood) {
     Alert.alert(route.params.deletedFood.name + " нэртэй хоолыг устгалаа");
     delete route.params.deletedFood;
+    setRefresh(true);
+  }
+
+  if (route.params && route.params.addCateg) {
+    Alert.alert(
+      route.params.addCateg.name + " нэртэй категорийг амжилттай нэмлээ"
+    );
+    delete route.params.addCateg;
+    setRefresh(true);
+  }
+  if (route.params && route.params.food) {
+    delete route.params.food;
+    setRefresh(true);
+  }
+  if (route.params && route.params.cart) {
+    delete route.params.cart;
+    setRefresh(true);
+  }
+  if (route.params && route.params.updateFood) {
+    Alert.alert(route.params.updateFood.name + " нэртэй хоолыг өөрчиллөө");
+    delete route.params.updateFood;
+    setRefresh(true);
+  }
+  // if (route.params && route.params.userName) {
+  //   // setUserName(route.params.userName);
+  //   // console.log(
+  //   //   route.params.userName +
+  //   //     "%%%%%%%%%%%%%%%%%%%%%%%%%%%%5555555555555555555555555555555555555555555555555555555555"
+  //   // );
+  //   delete route.params.userName;
+  //   // setRefresh(true);
+  // }
+  if (route.params && route.params.deleteCartItem) {
+    Alert.alert("Картаас амжилттай хаслаа");
+    delete route.params.deleteCartItem;
     setRefresh(true);
   }
 
@@ -44,12 +82,13 @@ const HomeScreen = ({ navigation, route }) => {
             title="Цэс"
             iconName="ios-menu"
             onPress={() => navigation.toggleDrawer()}
+            color="#33324D"
           />
         </HeaderButtons>
       ),
-      title: state.userName ? "welcome: " + state.userName : "Хоолны жор",
+      title: state.userName ? state.userName : "Хоолны жор",
     });
-  }, [navigation, localSearchText, state.userName]);
+  }, [navigation, localSearchText, state.userName, refresh]);
 
   console.log("---------------", navigation);
 

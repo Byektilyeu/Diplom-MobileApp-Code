@@ -10,7 +10,7 @@ const Search = ({ value, onValueChange, onFinishEnter }) => {
         value={value}
         onChangeText={onValueChange}
         style={css.searchText}
-        placeholder="Хайх"
+        placeholder="Хоол хайх /нэр, орц, зохиогч... /"
         autoCapitalize="none"
         autoCorrect={false}
         onEndEditing={onFinishEnter}
@@ -24,19 +24,19 @@ export default Search;
 const css = StyleSheet.create({
   searchPanel: {
     top: 15,
-    height: 50,
-    backgroundColor: "#99AAAB",
+    height: 36,
+    backgroundColor: "white",
     marginHorizontal: 15,
     borderRadius: 7,
     flexDirection: "row",
   },
   searchText: {
-    color: "white",
-    fontSize: 18,
+    color: "black",
+    fontSize: 16,
     flex: 1,
   },
   searchIcon: {
-    fontSize: 34,
+    fontSize: 20,
     color: "black",
     alignSelf: "center",
     marginHorizontal: 15,

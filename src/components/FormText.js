@@ -23,6 +23,7 @@ const FormText = (props) => {
 
         <TextInput
           {...props}
+          placeholder={props.placeholder}
           style={{
             paddingLeft: 10,
             color: textColor,
@@ -30,7 +31,6 @@ const FormText = (props) => {
             marginTop: Platform.OS == "ios" ? 0 : -3,
             ...props.style,
           }}
-          placeholder={props.placeholder}
         />
 
         {props.errorShow === false && (

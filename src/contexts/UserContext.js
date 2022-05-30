@@ -2,16 +2,19 @@ import React, { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { restApiUrl } from "../../Constants";
+import { Alert } from "react-native";
 
 const UserContext = React.createContext();
 
 export const UserStore = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [id, setId] = useState(null);
   const [token, setToken] = useState(null);
   const [email, setEmail] = useState(null);
   const [userName, setUserName] = useState(null);
   const [userRole, setUserRole] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [cart, setCart] = useState([]);
 
   const logout = async () => {
     await AsyncStorage.removeItem("user");
@@ -30,7 +33,13 @@ export const UserStore = (props) => {
         password: password,
       })
       .then((result) => {
-        console.log(result.data);
+        console.log(
+          "llllllllllllllllllllllllllllllllll",
+          result.data.user.cart
+        );
+        setId(result.data.user._id);
+        setCart([...result.data.user.cart]);
+        // console.log("cart: ", result.data.data.cart.items);
         loginUserSuccessful(
           result.data.token,
           email,
@@ -39,7 +48,8 @@ export const UserStore = (props) => {
         );
       })
       .catch((err) => {
-        loginFailed(err.response.data.error.message);
+        Alert.alert(err.message);
+        loginFailed(err.message);
       });
   };
 
@@ -49,11 +59,12 @@ export const UserStore = (props) => {
         name: name,
         email: email,
         password: password,
-        role: "admin",
+        role: "user",
       })
       .then((result) => {
         console.log(result.data);
-        loginUserSuccessful(result.data.token, email, name, "admin");
+        loginUserSuccessful(result.data.token, email, name, "user");
+        Alert.alert(name + " нэртэй хэрэглэгч амжилттай бүртгэгдлээ");
       })
       .catch((err) => {
         loginFailed(err.response.data.error.message);
@@ -86,10 +97,13 @@ export const UserStore = (props) => {
     setUserName(null);
     setUserRole(null);
   };
+  // console.log("--------===============------------------", cart);
 
   return (
     <UserContext.Provider
       value={{
+        cart,
+        setCart,
         isLoggedIn,
         setIsLoggedIn,
         token,
@@ -105,6 +119,7 @@ export const UserStore = (props) => {
         logout,
         isLoading,
         setIsLoading,
+        id,
       }}
     >
       {props.children}
