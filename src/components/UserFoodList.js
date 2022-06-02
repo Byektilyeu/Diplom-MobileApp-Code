@@ -1,8 +1,16 @@
-import { StyleSheet, Text, View, FlatList, SafeAreaView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  SafeAreaView,
+  ScrollView,
+} from "react-native";
 import React from "react";
 import Food from "./Food";
 import Spinner from "./Spinner";
 import useUserFoods from "../hooks/useUserFoods";
+import CategFood from "../components/CategFood";
 
 const UserFoodList = ({
   data,
@@ -47,12 +55,22 @@ const UserFoodList = ({
       )}
 
       {loading && <Spinner showText={false} />}
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        data={filteredFoods}
-        keyExtractor={(food) => food.name}
-        renderItem={({ item, index }) => <Food key={index} data={item} />}
-      />
+      <ScrollView
+        style={{ marginLeft: -70, marginRight: 5 }}
+        // contentContainerStyle={{
+        //   alignItems: "center",
+        //   justifyContent: "center",
+        // }}
+      >
+        <FlatList
+          showsHorizontalScrollIndicator={false}
+          data={filteredFoods}
+          keyExtractor={(food) => food.name}
+          renderItem={({ item, index }) => (
+            <CategFood key={index} data={item} />
+          )}
+        />
+      </ScrollView>
     </SafeAreaView>
   );
 };

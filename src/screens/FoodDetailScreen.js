@@ -25,6 +25,9 @@ const FoodDetailScreen = (props) => {
   const [foodId, setFoodId] = useState(null);
   const [food1, setFood1] = useState(null);
   const [show, setShow] = useState(false);
+  const [love, setLove] = useState(false);
+  const [roleUser, setRoleUser] = useState(null);
+
   // const [link, setLink] = useState(null);
   // foodsJs dotor baigaa food nii data ni params gedegeer propsoor ni orj irj bna
   // console.log("<--------------->", props.route.params.food);
@@ -67,33 +70,37 @@ const FoodDetailScreen = (props) => {
   };
 
   const UploadPhoto = (id) => {
-    console.log(
-      "food1.createUser____________________________________",
-      food1.createUser
-    );
-    console.log("state.id____________________________________", state.id);
-    if (food1.createUser === state.id) {
-      const fileUri = food1.photo;
-      const fileExt = fileUri.substring(fileUri.lastIndexOf(".") + 1);
-      food1.photo = `photo__${new Date().getTime()}.${fileExt}`;
-      //xhr zurag upload hiih
-      const xhr = new XMLHttpRequest();
-      xhr.addEventListener("load", (event) => handleUploadComplete(event, id));
-      // xhr.upload.addEventListener("progress", handleUploadProgress);
-      const data = new FormData();
-      data.append("file", {
-        uri: fileUri,
-        type: `image/${fileExt}`,
-        name: food1.photo,
-      });
-      xhr.open("PUT", `${restApiUrl}/api/v1/foods/${id}/photo`);
-      xhr.send(data);
-      Alert.alert("Зургийг амжилттай хадгаллаа");
-    } else {
-      Alert.alert(
-        "Уучлаарай, Зургийг хадгалж чадсангүй. Та өөрийнхөө оруулсан хоолны жорын мэдээллийг л өөрчлөх боломжтой байна."
-      );
-    }
+    // console.log(
+    //   "food1.createUser____________________________________",
+    //   food1.createUser
+    // );
+    // console.log("state.id____________________________________", state.id);
+    // if (food1.createUser === state.id) {
+    const fileUri = food1.photo;
+    const fileExt = fileUri.substring(fileUri.lastIndexOf(".") + 1);
+    food1.photo = `photo__${new Date().getTime()}.${fileExt}`;
+    //xhr zurag upload hiih
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener("load", (event) => handleUploadComplete(event, id));
+    // xhr.upload.addEventListener("progress", handleUploadProgress);
+    const data = new FormData();
+    data.append("file", {
+      uri: fileUri,
+      type: `image/${fileExt}`,
+      name: food1.photo,
+    });
+    xhr.open("PUT", `${restApiUrl}/api/v1/foods/${id}/photo`);
+    xhr.send(data);
+
+    Alert.alert("Зургийг амжилттай хадгаллаа");
+    props.navigation.navigate("Home", {
+      upPhoto: "hhha",
+    });
+    // } else {
+    //   Alert.alert(
+    //     "Уучлаарай, Зургийг хадгалж чадсангүй. Та өөрийнхөө оруулсан хоолны жорын мэдээллийг л өөрчлөх боломжтой байна."
+    //   );
+    // }
   };
 
   // console.log(id);
@@ -230,6 +237,7 @@ const FoodDetailScreen = (props) => {
   console.log("food1._id", id);
 
   const addToCart = () => {
+    setLove(true);
     // setFoodId(food._id);
     axios
       .post(`${restApiUrl}/api/v1/users/add-to-cart`, {
@@ -248,8 +256,31 @@ const FoodDetailScreen = (props) => {
       .catch((err) => console.log(err.message));
   };
 
+  const getUser = (id) => {
+    // food1.createUser === state.id
+    //   ? setShow(true)
+    //   : Alert.alert("Уучлаарай, Та өөрчлөх боломжгүй байна!!");
+    axios
+      .get(`${restApiUrl}/api/v1/users/${id}`)
+      .then((result) => {
+        const role = result.data.data.role;
+        if (role === "admin") {
+          setRoleUser(role);
+          setShow(true);
+        } else if (food1.createUser === state.id) {
+          setShow(true);
+        } else {
+          Alert.alert("Уучлаарай, Та өөрчлөх боломжгүй байна!!");
+        }
+      })
+      .catch((err) =>
+        Alert.alert("Уучлаарай, Та өөрчлөх боломжгүй байна!!" + err.message)
+      );
+  };
+
   const deleteCartItem = () => {
     // setFoodId(food._id);
+    setLove(false);
     axios
       .post(`${restApiUrl}/api/v1/users/delete-cart-item`, {
         _id: id,
@@ -270,72 +301,70 @@ const FoodDetailScreen = (props) => {
     <ScrollView style={{ padding: 10 }} showsVerticalScrollIndicator={false}>
       {food1.photo.startsWith("/") ? (
         <Image
-          style={{ width: 340, height: 400, alignSelf: "center" }}
+          style={{
+            width: 340,
+            height: 380,
+            borderRadius: 12,
+            alignSelf: "center",
+          }}
           source={{
             uri: "https://data.internom.mn/media/images" + food1.photo,
           }}
         />
       ) : (
         <Image
-          style={{ width: 340, height: 400, alignSelf: "center" }}
+          style={{
+            width: 340,
+            height: 380,
+            borderRadius: 12,
+            alignSelf: "center",
+          }}
           source={{ uri: restApiUrl + "/upload/" + food1.photo }}
         />
       )}
       <View
         style={{
           flexDirection: "row",
-          justifyContent: "space-between",
+          justifyContent: "flex-start",
           marginTop: 5,
           alignItems: "center",
         }}
       >
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginLeft: 5,
-          }}
-        >
-          <Feather name="heart" size={25} color="black" onPress={addToCart} />
-          <Text style={{ fontSize: 20, fontWeight: "bold", paddingRight: 10 }}>
-            +
-          </Text>
-
+        {love ? (
           <MaterialCommunityIcons
             name="heart"
             size={27}
             color="black"
             onPress={deleteCartItem}
           />
-          <Text style={{ fontSize: 20, fontWeight: "bold", marginRight: 5 }}>
-            -
-          </Text>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
+        ) : (
+          <View style={{ paddingHorizontal: 5 }}>
+            <Feather name="heart" size={25} color="black" onPress={addToCart} />
+          </View>
+        )}
+
+        <View style={{ paddingHorizontal: 5 }}>
           <Feather
-            onPress={() =>
-              food1.createUser === state.id
-                ? setShow(true)
-                : Alert.alert("Уучлаарай, Та өөрчлөх боломжгүй байна!!")
-            }
-            name="edit"
-            size={22}
+            onPress={() => getUser(state.id)}
+            name="edit-3"
+            size={25}
             color="black"
           />
-          <MaterialCommunityIcons
+        </View>
+
+        <View style={{ paddingHorizontal: 2 }}>
+          <Feather
             onPress={deleteOneFood}
             name="delete"
             size={25}
             color="black"
-            style={{ paddingLeft: 10 }}
           />
+          {/* <MaterialCommunityIcons
+            onPress={deleteOneFood}
+            name="delete-outline"
+            size={25}
+            color="black"
+          /> */}
         </View>
 
         {/* <Button
@@ -353,7 +382,9 @@ const FoodDetailScreen = (props) => {
           alignItems: "center",
         }}
       >
-        <Text style={{ fontSize: 14, fontWeight: "bold" }}>{food1.name}</Text>
+        <View style={{ width: 170 }}>
+          <Text style={{ fontSize: 14, fontWeight: "bold" }}>{food1.name}</Text>
+        </View>
 
         <TouchableOpacity
           onPress={() => {

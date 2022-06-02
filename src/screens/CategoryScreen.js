@@ -17,14 +17,12 @@ import * as Animatable from "react-native-animatable";
 import { List } from "react-native-paper";
 import FormRadioButtons from "../components/FormRadioButtons";
 
-import { lightColor, mainColor, restApiUrl } from "../../Constants";
+import { lightColor, mainColor, restApiUrl, textColor } from "../../Constants";
 import FormText from "../components/FormText";
 import MyButton from "../components/MyButton";
 import useCategory from "../hooks/useCategory";
 import axios from "axios";
-import UserContext from "../contexts/UserContext";
-import CellVariant from "../components/CellVariant";
-import { BaseButton } from "react-native-gesture-handler";
+import { Feather } from "@expo/vector-icons";
 const CategoryScreen = (props) => {
   const [isVisible, setVisible] = useState(false);
   const [refresh, setRefresh] = useState(false);
@@ -135,11 +133,13 @@ const CategoryScreen = (props) => {
       <View
         style={{
           flex: 1,
+          marginTop: 10,
+          marginBottom: -25,
           paddingHorizontal: 20,
           backgroundColor: mainColor,
         }}
       >
-        <Text style={{ fontSize: 20, color: lightColor }}>Категори</Text>
+        <Text style={{ fontSize: 20, color: textColor }}>Категори</Text>
       </View>
 
       <Animatable.View
@@ -156,12 +156,32 @@ const CategoryScreen = (props) => {
       >
         <ScrollView>
           <ScrollView>
-            <Text style={{ textAlign: "center", fontSize: 20, marginTop: 10 }}>
+            <Text style={{ textAlign: "center", fontSize: 17, marginTop: 10 }}>
               Одоо байгаа категориуд
             </Text>
 
             <TableView>
               <Section>
+                <Cell
+                  cellContentView={
+                    <View
+                      style={{
+                        alignItems: "center",
+                        flexDirection: "row",
+                        flex: 1,
+                      }}
+                    >
+                      <Text
+                        allowFontScaling
+                        numberOfLines={1}
+                        style={{ flex: 1, fontSize: 13, fontWeight: "bold" }}
+                      >
+                        Категорийн нэрс
+                      </Text>
+                      <Feather name="edit-3" size={22} color="black" />
+                    </View>
+                  }
+                />
                 {categories.map((category1, index) => (
                   // <View>
                   <Cell
@@ -176,16 +196,16 @@ const CategoryScreen = (props) => {
                         <Text
                           allowFontScaling
                           numberOfLines={1}
-                          style={{ flex: 1, fontSize: 15 }}
+                          style={{ flex: 1, fontSize: 13 }}
                         >
-                          {category1.name}
+                          {index + 1}. {category1.name}
                         </Text>
                         <TouchableOpacity
                           onPress={() => {
                             getCategory(category1.id) && setVisible(true);
                           }}
                         >
-                          <Text>Өөрчлөх</Text>
+                          <Feather name="edit-3" size={18} color="black" />
                         </TouchableOpacity>
                       </View>
                     }
@@ -230,6 +250,7 @@ const CategoryScreen = (props) => {
                 flexDirection: "row",
                 justifyContent: "space-between",
                 marginTop: 20,
+                marginHorizontal: 20,
               }}
             >
               <Button
@@ -265,47 +286,48 @@ const CategoryScreen = (props) => {
               </Button>
             </View>
           </Modal>
+          <View style={{ marginLeft: 8 }}>
+            <Text style={{ textAlign: "center", fontSize: 17 }}>
+              Шинэ категори нэмэх
+            </Text>
 
-          <Text style={{ textAlign: "center", fontSize: 20, marginTop: 20 }}>
-            Шинэ категори нэмэх
-          </Text>
+            <FormText
+              label="Категорийн нэр"
+              placholder="Категорийн нэр"
+              icon="edit"
+              onChangeText={(e) => setNewCategoryName(e)}
+            />
+            <FormText
+              label="Категорийн тайлбар"
+              placholder="Категорийн тайлбар"
+              icon="edit"
+              onChangeText={(e) => setNewCategoryDescription(e)}
+            />
 
-          <FormText
-            label="Категорийн нэр"
-            placholder="Категорийн нэр"
-            icon="edit"
-            onChangeText={(e) => setNewCategoryName(e)}
-          />
-          <FormText
-            label="Категорийн тайлбар"
-            placholder="Категорийн тайлбар"
-            icon="edit"
-            onChangeText={(e) => setNewCategoryDescription(e)}
-          />
-
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-evenly",
-              marginTop: 20,
-            }}
-          >
-            <Button
-              onPress={() => props.navigation.goBack()}
-              mode="outlined"
-              color="#05375a"
-              style={{ height: 40 }}
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-evenly",
+                marginTop: 20,
+              }}
             >
-              Буцах
-            </Button>
-            <Button
-              onPress={addCategory}
-              mode="outlined"
-              color="#05375a"
-              style={{ height: 40 }}
-            >
-              Нэмэх
-            </Button>
+              <Button
+                onPress={() => props.navigation.goBack()}
+                mode="outlined"
+                color="#05375a"
+                style={{ height: 40 }}
+              >
+                Буцах
+              </Button>
+              <Button
+                onPress={addCategory}
+                mode="outlined"
+                color="#05375a"
+                style={{ height: 40 }}
+              >
+                Нэмэх
+              </Button>
+            </View>
           </View>
         </ScrollView>
       </Animatable.View>

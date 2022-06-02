@@ -10,13 +10,13 @@ const Food = ({ data }) => {
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate("Detail", { food: data.id })}
-      style={{ marginLeft: 15, marginVertical: 15, width: 200 }}
+      style={{ marginLeft: 15, marginVertical: 15, width: 164 }}
     >
       {data.photo && data.photo.startsWith("/") ? (
         <Image
           style={{
-            width: 200,
-            height: 250,
+            width: 165,
+            height: 200,
             alignSelf: "center",
             marginRight: 15,
             borderRadius: 10,
@@ -26,8 +26,8 @@ const Food = ({ data }) => {
       ) : (
         <Image
           style={{
-            width: 200,
-            height: 250,
+            width: 165,
+            height: 200,
             alignSelf: "center",
             marginRight: 15,
             borderRadius: 10,
@@ -56,11 +56,18 @@ const Food = ({ data }) => {
           alignItems: "center",
         }}
       >
-        <Text style={{ marginRight: 10, fontSize: 12, fontWeight: "bold" }}>
-          Rate: {formatThousands(data.rating)}*
+        <Text
+          style={{
+            marginRight: 10,
+            fontSize: 10,
+            fontWeight: "bold",
+            color: "gray",
+          }}
+        >
+          Рэйтинг: {formatThousands(data.rating)}*
         </Text>
-        <Text style={{ marginRight: 10, fontSize: 12, color: "gray" }}>
-          Author: {data.author}
+        <Text style={{ marginRight: 10, fontSize: 10, color: "gray" }}>
+          Оруулсан: {data.author}
         </Text>
       </View>
     </TouchableOpacity>

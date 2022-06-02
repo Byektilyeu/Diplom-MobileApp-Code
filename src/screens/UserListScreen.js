@@ -14,6 +14,7 @@ import { TextInput } from "react-native-paper";
 import { Cell, Section, TableView } from "react-native-tableview-simple";
 import React, { useState, useContext, useEffect } from "react";
 import * as Animatable from "react-native-animatable";
+import { Feather } from "@expo/vector-icons";
 
 import { lightColor, mainColor, restApiUrl, textColor } from "../../Constants";
 import FormText from "../components/FormText";
@@ -107,12 +108,28 @@ const CategoryScreen = (props) => {
         }}
       >
         <ScrollView>
-          <Text style={{ textAlign: "center", fontSize: 16, marginTop: 10 }}>
+          {/* <Text style={{ textAlign: "center", fontSize: 16, marginTop: 10 }}>
             Хэрэглэгчдийн жагсаалт
-          </Text>
+          </Text> */}
 
-          <TableView>
+          <TableView style={{ marginTop: -15 }}>
             <Section>
+              <Cell
+                cellContentView={
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      flex: 1,
+                    }}
+                  >
+                    <Text style={{ flex: 1, fontSize: 15, fontWeight: "bold" }}>
+                      Нэрс:
+                    </Text>
+
+                    <Feather name="edit" size={20} color="black" />
+                  </View>
+                }
+              />
               {users.map((user, index) => (
                 <Cell
                   cellContentView={
@@ -130,7 +147,7 @@ const CategoryScreen = (props) => {
                           getUser(user._id) && setVisible(true);
                         }}
                       >
-                        <Text>Өөрчлөх</Text>
+                        <Feather name="edit-3" size={20} color="black" />
                       </TouchableOpacity>
                     </View>
                   }

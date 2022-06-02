@@ -4,13 +4,17 @@ import {
   View,
   FlatList,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import React from "react";
 import Food from "./Food";
 import useFoods from "../hooks/useFoods";
 import Spinner from "./Spinner";
+import { useNavigation } from "@react-navigation/native";
 
 const CategoryFoodList = ({
+  categoryID,
+  categName,
   data,
   style,
   searchLocalValue,
@@ -55,20 +59,43 @@ const CategoryFoodList = ({
   //     el.name.toLowerCase().includes(searchLocalValue.toLowerCase())
   // );
 
-  //   console.log(data);
+  // console.log(
+  //   "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++",
+  //   categName
+  // );
+  const navigation = useNavigation();
   return (
     <View style={{ ...style }}>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("CategScreen", {
+            categoryID: categoryID,
+            categName: categName,
+          })
+        }
+      >
+        <Text
+          style={{
+            marginLeft: 15,
+            fontWeight: "bold",
+            fontSize: 16,
+            marginBottom: 5,
+          }}
+        >
+          {data.name} - {filteredFoods.length}
+        </Text>
+      </TouchableOpacity>
+
       <Text
         style={{
           marginLeft: 15,
-          fontWeight: "bold",
-          fontSize: 20,
-          marginBottom: 5,
+          fontSize: 10,
+          color: "gray",
         }}
       >
-        {data.name} - {filteredFoods.length}
+        {data.description}
       </Text>
-      <Text style={{ marginLeft: 15 }}>{data.description}</Text>
+
       {errorMessage && (
         <Text style={{ color: "red", marginLeft: 15 }}>{errorMessage}</Text>
       )}
@@ -76,7 +103,7 @@ const CategoryFoodList = ({
       {loading && <Spinner showText={false} />}
       <FlatList
         horizontal={true}
-        showsHorizontalScrollIndicator={false}
+        showsHorizontalScrollIndicator={true}
         data={filteredFoods}
         keyExtractor={(food) => food.name}
         renderItem={({ item, index }) => <Food data={item} />}

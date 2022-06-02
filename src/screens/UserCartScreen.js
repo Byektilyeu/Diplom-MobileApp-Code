@@ -6,6 +6,7 @@ import {
   Alert,
   StatusBar,
   SafeAreaView,
+  FlatList,
   Button,
 } from "react-native";
 import FontAwesome, {
@@ -22,6 +23,7 @@ import Food from "../components/Food";
 import axios from "axios";
 import { lightColor, mainColor, restApiUrl, textColor } from "../../Constants";
 import { Feather } from "@expo/vector-icons";
+import CategFood from "../components/CategFood";
 
 const UserCartScreen = ({ navigation, route }) => {
   const [localSearchText, setLocalSearchText] = useState("");
@@ -118,18 +120,27 @@ const UserCartScreen = ({ navigation, route }) => {
       </View>
 
       <ScrollView style={{ marginBottom: 60 }}>
-        <View
+        <FlatList
+          showsHorizontalScrollIndicator={false}
+          data={cartItems}
+          keyExtractor={(food) => food.name}
+          renderItem={({ item, index }) => (
+            <CategFood key={index} data={item} />
+          )}
+        />
+      </ScrollView>
+      {/* <View
           style={{
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
+            marginLeft: -60,
           }}
-        >
-          {/* <Button title="refResh" onPress={() => getCart()}></Button> */}
-          {cartItems &&
+        > */}
+      {/* <Button title="refResh" onPress={() => getCart()}></Button> */}
+      {/* {cartItems &&
             cartItems.map((el, index) => <Food key={index} data={el} />)}
-        </View>
-      </ScrollView>
+        </View> */}
     </SafeAreaView>
   );
 };

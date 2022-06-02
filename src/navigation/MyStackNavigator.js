@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { mainColor } from "../../Constants.js";
 import UserCartScreen from "../screens/UserCartScreen.js";
 import GetUserFoodsScreen from "../screens/GetUserFoodsScreen.js";
+import CategoryFoodsScreen from "../screens/CategoryFoodsScreen.js";
 
 const Stack = createNativeStackNavigator();
 
@@ -43,6 +44,7 @@ export default () => (
     />
 
     <Stack.Screen name="Cart" component={UserCartScreen} />
+    <Stack.Screen name="CategScreen" component={CategoryFoodsScreen} />
     <Stack.Screen name="UserFoods" component={GetUserFoodsScreen} />
   </Stack.Navigator>
 );

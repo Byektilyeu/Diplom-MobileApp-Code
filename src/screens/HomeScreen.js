@@ -39,6 +39,11 @@ const HomeScreen = ({ navigation, route }) => {
     setRefresh(true);
   }
 
+  if (route.params && route.params.upPhoto) {
+    delete route.params.upPhoto;
+    setRefresh(true);
+  }
+
   if (route.params && route.params.addCateg) {
     Alert.alert(
       route.params.addCateg.name + " нэртэй категорийг амжилттай нэмлээ"
@@ -122,6 +127,8 @@ const HomeScreen = ({ navigation, route }) => {
                 searchLocalValue={localSearchText}
                 searchServerValue={serverSearchText}
                 key={category._id}
+                categoryID={category._id}
+                categName={category.name}
                 style={{ marginVertical: 10 }}
                 data={category}
               />
